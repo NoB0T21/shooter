@@ -1,0 +1,223 @@
+[gd_scene format=3 uid="uid://caboi5f3wtfty"]
+
+[ext_resource type="Script" uid="uid://cgsyuc6ux338f" path="res://Characters/Player/player.gd" id="1_ht6wf"]
+[ext_resource type="Script" uid="uid://rl4ec77t686j" path="res://Characters/Player/State/player_state_machine.gd" id="2_yeefy"]
+[ext_resource type="Script" uid="uid://m04ll0k71fgg" path="res://Characters/Player/State/idel_player_state.gd" id="3_aj84o"]
+[ext_resource type="Script" uid="uid://btj2mg5nf7x48" path="res://Characters/Player/State/walk_player_state.gd" id="4_oc658"]
+[ext_resource type="Script" uid="uid://dqojh2n1fpht4" path="res://Characters/Player/State/sprint_player_state.gd" id="5_14m2a"]
+[ext_resource type="Script" uid="uid://dkgwgg7essjj0" path="res://Characters/Player/State/jump_player_state.gd" id="5_oc658"]
+[ext_resource type="PackedScene" uid="uid://dfsxqhpx0kfo0" path="res://scenes/debug_panel.tscn" id="6_11ham"]
+[ext_resource type="Script" uid="uid://m66j8nvw4ie2" path="res://Characters/Player/State/slide_player_state.gd" id="7_dl42p"]
+[ext_resource type="Script" uid="uid://biptunynrieyn" path="res://scenes/reticle.gd" id="7_vpjpg"]
+[ext_resource type="Script" uid="uid://ckqrs28vicm6e" path="res://Characters/Player/reload_player_state.gd" id="8_wraqo"]
+[ext_resource type="PackedScene" uid="uid://dumr2bdhaii44" path="res://scenes/player_stats.tscn" id="10_1niqm"]
+[ext_resource type="Script" uid="uid://bgb7ea8kn4802" path="res://Weapons/init_weapons.gd" id="11_6fff4"]
+[ext_resource type="Resource" uid="uid://daiwspfifnsfp" path="res://Assets/Weapons/AKM/akm.tres" id="12_6h4vt"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_orl27"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ist4y"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dl42p"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1niqm"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_14m2a"]
+animation = &"slide"
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_dl42p"]
+input_0/name = "Slide"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "idle"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_6fff4"]
+fadeout_time = 0.25
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_dl42p"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ist4y"]
+graph_offset = Vector2(-549.33466, -105.096275)
+nodes/Movement/node = SubResource("AnimationNodeTransition_dl42p")
+nodes/Movement/position = Vector2(106.666664, 53.333332)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_14m2a")
+nodes/Animation/position = Vector2(-480, -106.666664)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_dl42p")
+"nodes/Animation 2/position" = Vector2(-160, 240)
+nodes/OneShot/node = SubResource("AnimationNodeOneShot_6fff4")
+nodes/OneShot/position = Vector2(-80, -133.33333)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_1niqm")
+"nodes/Animation 3/position" = Vector2(-400, 53.333332)
+nodes/SlideTimeScale/node = SubResource("AnimationNodeTimeScale_dl42p")
+nodes/SlideTimeScale/position = Vector2(-293.33334, -160)
+node_connections = [&"output", 0, &"Movement", &"Movement", 0, &"OneShot", &"Movement", 1, &"Animation 2", &"OneShot", 0, &"Animation 3", &"OneShot", 1, &"SlideTimeScale", &"SlideTimeScale", 0, &"Animation"]
+
+[sub_resource type="Animation" id="Animation_dl42p"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_14m2a"]
+resource_name = "slide"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.65, 0.65, 0.65)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dl42p"]
+_data = {
+&"RESET": SubResource("Animation_dl42p"),
+&"slide": SubResource("Animation_14m2a")
+}
+
+[node name="player" type="CharacterBody3D" unique_id=1051626560 node_paths=PackedStringArray("CAMERA", "weaponController")]
+script = ExtResource("1_ht6wf")
+CAMERA = NodePath("camera/Camera")
+weaponController = NodePath("Component/WeaponController")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1533429332]
+shape = SubResource("CapsuleShape3D_orl27")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=433475035]
+mesh = SubResource("CapsuleMesh_ist4y")
+
+[node name="camera" type="Node3D" parent="." unique_id=1842737980]
+
+[node name="Camera" type="Camera3D" parent="camera" unique_id=277504857]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75627124, 0.20518768)
+cull_mask = 1047555
+
+[node name="Player" type="Node3D" parent="." unique_id=1269707909]
+
+[node name="PlayerStateMachine" type="Node" parent="Player" unique_id=412971140 node_paths=PackedStringArray("CURRENT_STATE")]
+script = ExtResource("2_yeefy")
+CURRENT_STATE = NodePath("IdelPlayerState")
+
+[node name="IdelPlayerState" type="Node" parent="Player/PlayerStateMachine" unique_id=1802340039 node_paths=PackedStringArray("animationTree")]
+script = ExtResource("3_aj84o")
+animationTree = NodePath("../../../AnimationTree")
+
+[node name="WalkPlayerState" type="Node" parent="Player/PlayerStateMachine" unique_id=666162543]
+script = ExtResource("4_oc658")
+
+[node name="SprintPlayerState" type="Node" parent="Player/PlayerStateMachine" unique_id=1385248956]
+script = ExtResource("5_14m2a")
+
+[node name="JumpPlayerState" type="Node" parent="Player/PlayerStateMachine" unique_id=375188185]
+script = ExtResource("5_oc658")
+
+[node name="SlidePlayerState" type="Node" parent="Player/PlayerStateMachine" unique_id=1165829329 node_paths=PackedStringArray("animationTree")]
+script = ExtResource("7_dl42p")
+animationTree = NodePath("../../../AnimationTree")
+
+[node name="ReloadPlayerState" type="Node" parent="Player/PlayerStateMachine" unique_id=957647641 node_paths=PackedStringArray("weaponController")]
+script = ExtResource("8_wraqo")
+weaponController = NodePath("../../../Component/WeaponController")
+
+[node name="UserInterface" type="Control" parent="." unique_id=788200947]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Control" parent="UserInterface" unique_id=217938861 instance=ExtResource("6_11ham")]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 100.0
+offset_bottom = 59.99997
+
+[node name="Reticle" type="CenterContainer" parent="UserInterface" unique_id=368087905 node_paths=PackedStringArray("RETICLE_LINES", "PLAYER_CONTROLLER")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("7_vpjpg")
+RETICLE_LINES = [NodePath("Top"), NodePath("Right"), NodePath("Bottom"), NodePath("Left")]
+PLAYER_CONTROLLER = NodePath("../..")
+DOT_RADIUS = 2.0
+
+[node name="Top" type="Line2D" parent="UserInterface/Reticle" unique_id=159649549]
+points = PackedVector2Array(0, -5, 0, -10)
+width = 1.5
+default_color = Color(0.09803922, 1, 0, 1)
+
+[node name="Right" type="Line2D" parent="UserInterface/Reticle" unique_id=819797344]
+points = PackedVector2Array(5, 0, 10, 0)
+width = 1.5
+default_color = Color(0.09803922, 1, 0, 1)
+
+[node name="Bottom" type="Line2D" parent="UserInterface/Reticle" unique_id=1606105391]
+points = PackedVector2Array(0, 5, 0, 10)
+width = 1.5
+default_color = Color(0.09803922, 1, 0, 1)
+
+[node name="Left" type="Line2D" parent="UserInterface/Reticle" unique_id=1561540933]
+points = PackedVector2Array(-5, 0, -10, 0)
+width = 1.5
+default_color = Color(0.09803922, 1, 0, 1)
+
+[node name="PlayerStats" parent="UserInterface" unique_id=1402209660 instance=ExtResource("10_1niqm")]
+visible = false
+layout_mode = 1
+offset_left = 0.0
+offset_top = -52.0
+offset_right = 100.0
+offset_bottom = 0.0
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1523995696]
+tree_root = SubResource("AnimationNodeBlendTree_ist4y")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Movement/current_state = "Slide"
+parameters/Movement/transition_request = ""
+parameters/Movement/current_index = 0
+parameters/OneShot/active = false
+parameters/OneShot/internal_active = false
+parameters/OneShot/request = 0
+parameters/SlideTimeScale/scale = 1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1285144086]
+libraries/ = SubResource("AnimationLibrary_dl42p")
+
+[node name="Component" type="Node" parent="." unique_id=1440069733]
+
+[node name="WeaponController" type="Node" parent="Component" unique_id=600793099 node_paths=PackedStringArray("weapon_model_parent")]
+script = ExtResource("11_6fff4")
+WEAPON_TYPE = ExtResource("12_6h4vt")
+weapon_model_parent = NodePath("../../camera/Camera")

@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://crgltajha4p26"]
+
+[ext_resource type="Script" uid="uid://cjbtco5d3hshy" path="res://Characters/Enemy/Zombie/zombie.gd" id="1_w3ryt"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ist4y"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orl27"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ist4y"]
+material = SubResource("StandardMaterial3D_orl27")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_1cbuk"]
+viewport_path = NodePath("Sprite3D/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w3ryt"]
+bg_color = Color(0.6, 0.6, 0.6, 0.16078432)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pw583"]
+bg_color = Color(0.16078432, 0.8666667, 0.26666668, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Zombie" type="Area3D" unique_id=880822480]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_w3ryt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=50818343]
+shape = SubResource("CapsuleShape3D_ist4y")
+debug_color = Color(0.85035104, 0.00089407683, 0.900507, 0.41960785)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=16231104]
+layers = 2
+cast_shadow = 0
+mesh = SubResource("CapsuleMesh_ist4y")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=985235251]
+
+[node name="ForwardRay" type="RayCast3D" parent="." unique_id=1182357648]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.20521712, 0)
+target_position = Vector3(0, 0, -1.2)
+collision_mask = 3
+collide_with_areas = true
+debug_shape_custom_color = Color(0, 1, 0, 1)
+debug_shape_thickness = 5
+
+[node name="DownRay" type="RayCast3D" parent="." unique_id=29522004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.305668, -0.1989181)
+target_position = Vector3(0, -0.6, 0)
+debug_shape_custom_color = Color(0, 0.98039216, 0, 1)
+debug_shape_thickness = 5
+
+[node name="CrowdRay" type="RayCast3D" parent="." unique_id=339654566]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, -0.3)
+target_position = Vector3(0, -0.8, -0.8)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="VisibleOnScreenEnabler3D" type="VisibleOnScreenEnabler3D" parent="." unique_id=993009642]
+layers = 3
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=967351324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1146834, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_1cbuk")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite3D" unique_id=563573538]
+handle_input_locally = false
+size = Vector2i(168, 16)
+
+[node name="Health" type="ProgressBar" parent="Sprite3D/SubViewport" unique_id=485436667]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_w3ryt")
+theme_override_styles/fill = SubResource("StyleBoxFlat_pw583")
+max_value = 1.0
+step = 0.0
+value = 1.0
+allow_lesser = true
+show_percentage = false

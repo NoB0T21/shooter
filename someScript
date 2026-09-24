@@ -1,0 +1,101 @@
+class_name Player
+extends CharacterBody3D
+
+const SPEED = 5.0
+const JUMP_VELOCITY = 4.5
+@export var CAMERA :Node3D
+@export var MOUSE_SENSITUIVE:float = 0.5
+@export var TILT_LOWER_LIMIT := deg_to_rad(-90.0)
+@export var TILT_UPPER_LIMIT := deg_to_rad(90.0)
+@export var anim_tree: AnimationTree
+@export var head_placeholder: BoneAttachment3D
+
+var _mouse_rotation :Vector3
+var _rotation_input :float
+var _tilt_input :float
+var _player_rotation :Vector3
+var _camera_rotation :Vector3
+
+const BLEND_PATH: String = "parameters/BlendSpace1D/blend_position"
+const BLEND_Amount: String = "parameters/add"
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		get_tree().quit()
+
+func _ready() -> void:
+	GlobalVariable.player = self
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		_rotation_input = -event.relative.x * MOUSE_SENSITUIVE
+		_tilt_input = -event.relative.y * MOUSE_SENSITUIVE
+
+func _update_camera(delta: float) -> void:
+	_mouse_rotation.x += _tilt_input * delta 
+	_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
+	_mouse_rotation.y += _rotation_input * delta
+	
+	_player_rotation = Vector3(0.0, _mouse_rotation.y, 0.0)
+	_camera_rotation = Vector3(_mouse_rotation.x, 0.0, 0.0)
+	
+	
+	CAMERA.transform.basis = Basis.from_euler(_camera_rotation)
+	CAMERA.rotation.z = 0.0
+	if _mouse_rotation.x != 0.0:
+		CAMERA.position.y = head_placeholder.position.y - 1.0
+	
+	global_transform.basis = basis.from_euler(_player_rotation)
+	update_pitch_animation()
+	
+	_rotation_input = 0.0
+	_tilt_input = 0.0
+
+func _physics_process(delta: float) -> void:
+	_update_camera(delta)
+
+
+
+
+class_name  WalkPlayerState
+extends PlayerMovementState
+
+@export var SPEED: float = 4.0
+@export var ACCLERATION: float = 0.1
+@export var DECELERATION: float =  0.25
+@export var animation_tree: AnimationTree
+@export var sketchfab_scene_2 : Node3D
+@export var JUMP_SHAPECAST : ShapeCast3D 
+
+func enter()-> void:
+	animation_tree.set("parameters/Transition/transition_request", "walk")
+
+func update(delta: float) -> void:
+	PLAYER.update_gravity(delta)
+	PLAYER.update_input(SPEED, ACCLERATION, DECELERATION)
+	PLAYER.update_velocity()
+	
+	
+	
+	if not PLAYER.is_on_floor():
+		if JUMP_SHAPECAST.is_colliding() == false:
+			transition.emit("FallPlayerState")
+	if Input.is_action_just_pressed("shoot"):
+		sketchfab_scene_2.shoot()
+		animation_tree.set("parameters/shot_play/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+	if Input.is_action_just_pressed("sprint") and PLAYER.is_on_floor():
+		transition.emit("SprintPlayerState")
+	if Input.is_action_just_pressed("crouch") and PLAYER.is_on_floor():
+		transition.emit("crouchPlayerState")
+	if Input.is_action_just_pressed("jump") and PLAYER.is_on_floor():
+		transition.emit("JumpPlayerState")
+	if PLAYER.velocity.length() == 0.0:
+		transition.emit("IdlePlayerState")
+	
+	update_walk_locomotion()
+
+func update_walk_locomotion() -> void:
+	var input_dir :Vector2 =GlobalVariable.player.player_direction
+	animation_tree.set("parameters/Walk_Locomotion/blend_position", input_dir)
+

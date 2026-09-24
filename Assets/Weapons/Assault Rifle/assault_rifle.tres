@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="weapons" format=3 uid="uid://y5exbvk2w2lo"]
+
+[ext_resource type="PackedScene" uid="uid://dina52flghf54" path="res://Assets/Weapons/Assault Rifle/assault_rifle.tscn" id="1_ax0io"]
+[ext_resource type="Script" uid="uid://cfaxcv4nebie8" path="res://Weapons/weapons.gd" id="1_l10qn"]
+
+[resource]
+script = ExtResource("1_l10qn")
+name = &"M24"
+position = Vector3(0.48, -0.45, -0.35)
+rotation = Vector3(0, 90, 0)
+scale = Vector3(0.3, 0.3, 0.3)
+modle = ExtResource("1_ax0io")
+metadata/_custom_type_script = "uid://cfaxcv4nebie8"

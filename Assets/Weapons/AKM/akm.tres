@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="weapons" format=3 uid="uid://daiwspfifnsfp"]
+
+[ext_resource type="PackedScene" uid="uid://b1a1h6kka1tcc" path="res://Assets/Weapons/AKM/akm.tscn" id="1_jhqmq"]
+[ext_resource type="Script" uid="uid://cfaxcv4nebie8" path="res://Weapons/weapons.gd" id="1_mvppd"]
+[ext_resource type="PackedScene" uid="uid://ciwx82k7e48k4" path="res://Assets/Weapons/Bullet/4.5mm/4_5_Bullet.tscn" id="1_nk40d"]
+
+[resource]
+script = ExtResource("1_mvppd")
+name = &"akm"
+fire_rate = 0.16
+max_ammo = 30
+total_ammo = 999
+reload_time = 0.8
+range = 90.0
+Bullet = ExtResource("1_nk40d")
+position = Vector3(0.6, -0.4, -1)
+scale = Vector3(0.4, 0.4, 0.4)
+modle = ExtResource("1_jhqmq")
+metadata/_custom_type_script = "uid://cfaxcv4nebie8"

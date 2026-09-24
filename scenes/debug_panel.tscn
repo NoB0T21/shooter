@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dfsxqhpx0kfo0"]
+
+[ext_resource type="Script" uid="uid://b4yyumf04y2dn" path="res://Characters/Player/Debugging.gd" id="1_7of2g"]
+
+[sub_resource type="Theme" id="Theme_7of2g"]
+default_font_size = 0
+Label/font_sizes/font_size = 10
+
+[node name="DebugPanel" type="PanelContainer" unique_id=1793540040]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 79.99997
+mouse_filter = 2
+script = ExtResource("1_7of2g")
+
+[node name="Debug_VBoxContainer" type="VBoxContainer" parent="." unique_id=1392538306]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme = SubResource("Theme_7of2g")

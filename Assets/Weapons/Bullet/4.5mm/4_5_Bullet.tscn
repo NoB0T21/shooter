@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://ciwx82k7e48k4"]
+
+[ext_resource type="Script" uid="uid://cyfif7egu8jmd" path="res://Assets/Weapons/Bullet/4.5mm/4_5_bullet.gd" id="1_kopkg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orl27"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ist4y"]
+material = SubResource("StandardMaterial3D_orl27")
+size = Vector3(0.2, 0.2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_egsm4"]
+albedo_color = Color(1, 1, 0, 1)
+emission_enabled = true
+emission = Color(1, 1, 0, 1)
+emission_energy_multiplier = 5.0
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tvsdp"]
+direction = Vector3(0, 0, 1)
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_r03yo"]
+size = Vector2(0.06, 0.06)
+
+[node name="45Bullet" type="Node3D" unique_id=866475610]
+script = ExtResource("1_kopkg")
+SPEED = 20.0
+TTL = 5.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1799067210]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.99825907)
+mesh = SubResource("BoxMesh_ist4y")
+
+[node name="RayCast3D" type="RayCast3D" parent="." unique_id=500997468]
+transform = Transform3D(1, 0, 0, 0, 0.9998477, -0.017452406, 0, 0.017452406, 0.9998477, 0, 0, -1.7082485)
+target_position = Vector3(0, 0, -1)
+collision_mask = 3
+hit_from_inside = true
+collide_with_areas = true
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 4
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1487672757]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.971355)
+material_override = SubResource("StandardMaterial3D_egsm4")
+emitting = false
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_tvsdp")
+draw_pass_1 = SubResource("QuadMesh_r03yo")

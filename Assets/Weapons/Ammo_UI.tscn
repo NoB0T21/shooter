@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cj47tu52rbdiq"]
+
+[ext_resource type="Script" uid="uid://bl6rf6movy0x" path="res://Assets/Weapons/ammo_ui.gd" id="1_ekrpk"]
+
+[node name="Label3D" type="Label3D" unique_id=2052446201]
+text = "hh"
+font_size = 35
+outline_size = 8
+script = ExtResource("1_ekrpk")

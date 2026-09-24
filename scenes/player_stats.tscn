@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://dumr2bdhaii44"]
+
+[ext_resource type="Script" uid="uid://w8w7lq1arw0j" path="res://scenes/player_stats.gd" id="1_0n8io"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6h4vt"]
+bg_color = Color(0.6, 0.6, 0.6, 0.16078432)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6fff4"]
+bg_color = Color(0.16078432, 0.8666667, 0.26666668, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_orl27"]
+bg_color = Color(0.6, 0.6, 0.6, 0.22745098)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ist4y"]
+bg_color = Color(0, 0.5882353, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="PlayerStats" type="PanelContainer" unique_id=1402209660 node_paths=PackedStringArray("Stamina", "Health")]
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -80.0
+offset_right = 120.0
+offset_bottom = -28.0
+grow_vertical = 0
+script = ExtResource("1_0n8io")
+Stamina = NodePath("VBoxContainer/Stamina")
+Health = NodePath("VBoxContainer/Health")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1548071912]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Health" type="ProgressBar" parent="VBoxContainer" unique_id=1002779235]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_6h4vt")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6fff4")
+max_value = 1.0
+step = 0.0
+value = 1.0
+allow_lesser = true
+
+[node name="Stamina" type="ProgressBar" parent="VBoxContainer" unique_id=1105096316]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_orl27")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ist4y")
+max_value = 1.0
